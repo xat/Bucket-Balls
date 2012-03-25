@@ -1,5 +1,4 @@
 (function (io) {
-
   // Init som useful stuff for easier access (don't need 'em all)
   var b2Vec2 = Box2D.Common.Math.b2Vec2
     , b2AABB = Box2D.Collision.b2AABB
@@ -56,7 +55,7 @@
       worldWidth = window.innerWidth;
       worldHeight = window.innerHeight;
 
-      socket = io.connect('http://node.soped.lan:3100');
+      socket = io.connect(window.socketHost);
 
       socket.on('connect', function() {
         socket.emit('create', {

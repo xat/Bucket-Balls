@@ -26,7 +26,7 @@ for (var k in config.rulesets) {
 }
 
 app.get('/client/:id', function(req, res) {
-  res.render('index', {clientId: req.params.id});
+  res.render('index', {clientId: req.params.id, host: 'http://' + config.host});
 });
 
 io.sockets.on('connection', function(socket) {
@@ -41,5 +41,6 @@ io.sockets.on('connection', function(socket) {
   });
 });
 
-app.listen(3100);
+app.listen(config.port);
+
 repl.start("bucket-cmd> ").context.buckets = buckets;

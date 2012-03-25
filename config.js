@@ -33,3 +33,6 @@ module.exports.mappings = {
   3: 'desktop',
   4: 'android'
 };
+
+module.exports.port = 3100;
+module.exports.host = 'node.soped.lan:3100';
