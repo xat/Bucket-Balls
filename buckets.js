@@ -3,24 +3,20 @@ var buckets = function() {
 };
 
 buckets.prototype.add = function(id, socket, meta, ruleset) {
-  //++this.bucketCount;
   if (this.bucketList['id'+id]) {
     this.bucketList['id'+id].destroy();
   }
   this.bucketList['id'+id] = new bucket(id, socket, meta, ruleset);
-  socket.set('myid', id);
+  socket.bucketid = id;
   console.log('created bucket %s', id);
-  //return this.bucketCount;
 };
 
 buckets.prototype.remove = function(socket) {
-  socket.get('myid', function(err, id) {
-    try {
-      this.bucketList['id' + id].destroy();
-      delete this.bucketList['id' + id];
-      console.log('removed bucket %s', id);
-    } catch(e) {}
-  });
+  try {
+    this.bucketList['id' + socket.bucketid].destroy();
+    delete this.bucketList['id' + socket.bucketid];
+    console.log('removed bucket %s', socket.bucketid);
+  } catch(e) {}
 };
 
 buckets.prototype.getBucket = function(id) {
@@ -46,7 +42,6 @@ buckets.prototype.getTarget = function(src) {
       }
     }
   }
-
   console.log('most points: %s, winner id: %s', mostPoints, winner.id)
   return winner;
 };

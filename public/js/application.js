@@ -42,7 +42,7 @@
       beta,
       shapes = {};
 
-  var debug = true;
+  var debug = false;
 
   var init = {
     start:function (id) {
@@ -417,10 +417,4 @@
       world.m_gravity.y = gravity.y * 6;
     }
   });
-
-/*
-  window.addEventListener('resize', function() {
-    rebuild();
-  });
-*/
 })(io);

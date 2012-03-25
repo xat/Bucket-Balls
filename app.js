@@ -1,12 +1,14 @@
 var express = require('express')
   , app = express.createServer()
   , repl = require("repl")
-  , BucketMgr = require(__dirname + '/lib/buckets')
+  , BucketMgr = require(__dirname + '/buckets')
+  , config = require(__dirname + '/config')
   , buckets = new BucketMgr.buckets
+  , rulesets = {}
   , io = require('socket.io').listen(app);
 
-
 app.configure(function() {
+  io.set('log level', 1);
   app.set('views', __dirname + '/templates');
   app.set('view engine', 'html');
   app.set('view options', {layout: false});
@@ -14,33 +16,14 @@ app.configure(function() {
   app.use(express.static(__dirname + '/public'))
 });
 
-io.configure('production', function() {
-  io.set('log level', 1);
-});
-
-var imac = new BucketMgr.ruleset;
-var desktop = new BucketMgr.ruleset;
-var laptop = new BucketMgr.ruleset;
-var android = new BucketMgr.ruleset;
-
-imac.add(100, function(src) {
-  return (src.lastContact === 'right');
-});
-
-desktop.add(100, function(src) {
-  return (src.lastContact === 'left');
-});
-
-laptop.add(200, function(src) {
-  return src.hasDeviceorientation;
-});
-
-var clientToRuleset = {
-  'id1': laptop,
-  'id2': imac,
-  'id3': desktop,
-  'id4': android
-};
+for (var k in config.rulesets) {
+  if (config.rulesets.hasOwnProperty(k)) {
+    rulesets[k] = new BucketMgr.ruleset;
+    for (var i=0; i<config.rulesets[k].length; i++) {
+      rulesets[k].add(config.rulesets[k][i].points, config.rulesets[k][i].assert);
+    }
+  }
+}
 
 app.get('/client/:id', function(req, res) {
   res.render('index', {clientId: req.params.id});
@@ -48,13 +31,12 @@ app.get('/client/:id', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
   socket.on('create', function(data) {
-    buckets.add(data.clientId, socket, data, clientToRuleset['id'+data.clientId]);
+    buckets.add(data.clientId, socket, data, config.mappings[data.clientId]);
   });
   socket.on('removeball', function(data) {
     buckets.getTarget(data).addBall(data.circleMeta);
   });
   socket.on('disconnect', function() {
-    console.log('disconnect');
     buckets.remove(socket);
   });
 });
