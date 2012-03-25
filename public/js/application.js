@@ -1,3 +1,9 @@
+/*
+ * 90% of the code in this file is taken from javve
+ * original file: https://github.com/javve/box2d-javascript/blob/master/demo-1/demo-1.js
+ * all credits go to him :)
+ */
+
 (function (io) {
   // Init som useful stuff for easier access (don't need 'em all)
   var b2Vec2 = Box2D.Common.Math.b2Vec2
