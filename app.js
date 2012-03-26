@@ -31,7 +31,7 @@ app.get('/client/:id', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
   socket.on('create', function(data) {
-    buckets.add(data.clientId, socket, data, config.mappings[data.clientId]);
+    buckets.add(data.clientId, socket, data, rulesets[config.mappings[data.clientId]]);
   });
   socket.on('removeball', function(data) {
     buckets.getTarget(data).addBall(data.circleMeta);
