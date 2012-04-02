@@ -3,6 +3,10 @@ module.exports.rulesets = {
     {
       points: 100,
       assert: function(src) {
+        // the src object has these properties:
+        // lastContact (can be 'right' or 'left'... the side on which the ball left a bucket)
+        // hasDeviceorientation (true if source bucket has deviceorientation)
+        // clientId (the id of the client which droped the ball)
         return (src.lastContact === 'right');
       }
     }
