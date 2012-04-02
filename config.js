@@ -35,4 +35,4 @@ module.exports.mappings = {
 };
 
 module.exports.port = 3100;
-module.exports.host = 'node.soped.lan:3100';
+module.exports.host = 'node.soped.lan';
