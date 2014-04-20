@@ -1,0 +1,29 @@
+{
+  "name": "Bucket-Balls",
+  "version": "0.2.0",
+  "description": "Turn your devices into buckets",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xat/Bucket-Balls.git"
+  },
+  "keywords": [
+    "buckets",
+    "deviceorientation"
+  ],
+  "author": "Simon Kusterer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xat/Bucket-Balls/issues"
+  },
+  "homepage": "https://github.com/xat/Bucket-Balls",
+  "dependencies": {
+    "express": "^4.0.0",
+    "socket.io": "^0.9.16",
+    "serve-static": "^1.0.4",
+    "ejs": "^1.0.0"
+  }
+}

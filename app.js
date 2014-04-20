@@ -1,20 +1,19 @@
-var express = require('express')
-  , app = express.createServer()
-  , repl = require("repl")
-  , BucketMgr = require(__dirname + '/buckets')
-  , config = require(__dirname + '/config')
+var app = require('express')()
+  , repl = require('repl')
+  , server = require('http').Server(app)
+  , BucketMgr = require('./buckets')
+  , serveStatic = require('serve-static')
+  , config = require('./config')
   , buckets = new BucketMgr.buckets
   , rulesets = {}
-  , io = require('socket.io').listen(app);
+  , ejs = require('ejs')
+  , io = require('socket.io').listen(server);
 
-app.configure(function() {
-  io.set('log level', 1);
-  app.set('views', __dirname + '/templates');
-  app.set('view engine', 'html');
-  app.set('view options', {layout: false});
-  app.register(".html", require("jqtpl").express);
-  app.use(express.static(__dirname + '/public'))
-});
+io.set('log level', 1);
+app.set('views', 'templates');
+
+app.use(serveStatic('public'));
+app.engine('html', ejs.renderFile);
 
 for (var k in config.rulesets) {
   if (config.rulesets.hasOwnProperty(k)) {
@@ -26,7 +25,7 @@ for (var k in config.rulesets) {
 }
 
 app.get('/client/:id', function(req, res) {
-  res.render('index', {clientId: req.params.id, host: 'http://'+config.host+':'+config.port});
+  res.render('index.html', {clientId: req.params.id, host: 'http://'+config.host+':'+config.port});
 });
 
 io.sockets.on('connection', function(socket) {
@@ -41,6 +40,6 @@ io.sockets.on('connection', function(socket) {
   });
 });
 
-app.listen(config.port);
+server.listen(config.port);
 
 repl.start("bucket-cmd> ").context.buckets = buckets;
