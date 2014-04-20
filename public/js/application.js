@@ -61,7 +61,7 @@
       worldWidth = window.innerWidth;
       worldHeight = window.innerHeight;
 
-      socket = io.connect(window.socketHost);
+      socket = io.connect();
 
       socket.on('connect', function() {
         socket.emit('create', {

@@ -25,7 +25,7 @@ for (var k in config.rulesets) {
 }
 
 app.get('/client/:id', function(req, res) {
-  res.render('index.html', {clientId: req.params.id, host: 'http://'+config.host+':'+config.port});
+  res.render('index.html', { clientId: req.params.id });
 });
 
 io.sockets.on('connection', function(socket) {
